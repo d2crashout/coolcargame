@@ -127,7 +127,7 @@ window.addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
 
 const LEVELS = [
   { points: [0, 0, 12, 0, 24, 2, 38, 3, 48, 1], spikes: [{ x: 17, yOffset: 0 }] },
-  { points: [0, 0, 9, 0, 16, 3, 24, -1, 32, 2, 42, 2], spikes: [{ x: 28, yOffset: 0.15 }] },
+  { points: [0, 0, 9, 0, 16, 3, 24, -1, 32, 2, 42, 2], spikes: [{ x: 28, yOffset: 0.15, spikeCount: 4 }] },
   { points: [0, 0, 11, 2, 19, -2, 29, 3, 42, -1, 55, 1], spikes: [{ x: 23, yOffset: 0 }, { x: 46, yOffset: 0.2 }] },
   { points: [0, 0, 8, 0, 13, 4, 17, -3, 23, 5, 33, 0, 42, 2], spikes: [{ x: 19, yOffset: 0.1 }] },
   { points: [0, 0, 10, 1, 18, 1, 24, 5, 30, -1, 39, 4, 48, 1], spikes: [{ x: 34, yOffset: 0 }] },
@@ -227,9 +227,11 @@ function addSpikeHazard(spike) {
 
   const spikesGroup = new THREE.Group();
   const spikeMaterial = new THREE.MeshStandardMaterial({ color: 0xb91c1c, emissive: 0x2f0606, roughness: 0.55 });
-  for (let i = 0; i < 5; i++) {
+  const spikeCount = spike.spikeCount ?? 5;
+  for (let i = 0; i < spikeCount; i++) {
     const cone = new THREE.Mesh(new THREE.ConeGeometry(0.28, 0.75, 8), spikeMaterial);
-    cone.position.set((i - 2) * 0.8, 0.35, 0);
+    const centerOffset = (spikeCount - 1) * 0.5;
+    cone.position.set((i - centerOffset) * 0.8, 0.35, 0);
     cone.castShadow = true;
     spikesGroup.add(cone);
   }
