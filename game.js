@@ -32,11 +32,11 @@ sun.shadow.camera.bottom = -80;
 scene.add(sun);
 
 const groundPlane = new THREE.Mesh(
-  new THREE.PlaneGeometry(600, 600),
+  new THREE.PlaneGeometry(900, 900),
   new THREE.MeshStandardMaterial({ color: 0x26472f, roughness: 1 })
 );
 groundPlane.rotation.x = -Math.PI / 2;
-groundPlane.position.y = -4;
+groundPlane.position.y = -5;
 groundPlane.receiveShadow = true;
 scene.add(groundPlane);
 
@@ -103,26 +103,34 @@ window.addEventListener('keydown', (e) => {
 window.addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
 
 const LEVELS = [
-  [0, 0, 12, 0, 24, 2, 38, 3, 48, 1],
-  [0, 0, 9, 0, 16, 3, 24, -1, 32, 2, 42, 2],
-  [0, 0, 11, 2, 19, -2, 29, 3, 42, -1, 55, 1],
-  [0, 0, 8, 0, 13, 4, 17, -3, 23, 5, 33, 0, 42, 2],
-  [0, 0, 10, 1, 18, 1, 24, 5, 30, -1, 39, 4, 48, 1],
-  [0, 0, 8, -1, 15, 2, 25, 6, 34, 0, 42, 5, 52, 2],
-  [0, 0, 7, 3, 15, -2, 22, 4, 29, -3, 38, 5, 50, 1],
-  [0, 0, 9, 0, 18, 4, 25, 4, 34, -2, 44, 2, 55, 3],
-  [0, 0, 8, 2, 14, -3, 21, 2, 30, 6, 41, 0, 55, 4],
-  [0, 0, 10, 0, 18, 5, 25, -1, 32, 6, 41, -2, 52, 3],
-  [0, 0, 12, 1, 20, 5, 28, -2, 38, 7, 46, 2, 58, 4],
-  [0, 0, 9, 3, 16, -1, 24, 5, 30, -4, 38, 7, 49, 1, 62, 5]
+  { points: [0, 0, 12, 0, 24, 2, 38, 3, 48, 1], spikes: [{ x: 17, yOffset: 0 }] },
+  { points: [0, 0, 9, 0, 16, 3, 24, -1, 32, 2, 42, 2], spikes: [{ x: 28, yOffset: 0.15 }] },
+  { points: [0, 0, 11, 2, 19, -2, 29, 3, 42, -1, 55, 1], spikes: [{ x: 23, yOffset: 0 }, { x: 46, yOffset: 0.2 }] },
+  { points: [0, 0, 8, 0, 13, 4, 17, -3, 23, 5, 33, 0, 42, 2], spikes: [{ x: 19, yOffset: 0.1 }] },
+  { points: [0, 0, 10, 1, 18, 1, 24, 5, 30, -1, 39, 4, 48, 1], spikes: [{ x: 34, yOffset: 0 }] },
+  { points: [0, 0, 8, -1, 15, 2, 25, 6, 34, 0, 42, 5, 52, 2], spikes: [{ x: 21, yOffset: 0.1 }, { x: 44, yOffset: 0 }] },
+  { points: [0, 0, 7, 3, 15, -2, 22, 4, 29, -3, 38, 5, 50, 1], spikes: [{ x: 25, yOffset: 0.2 }] },
+  { points: [0, 0, 9, 0, 18, 4, 25, 4, 34, -2, 44, 2, 55, 3], spikes: [{ x: 31, yOffset: 0 }, { x: 48, yOffset: 0.1 }] },
+  { points: [0, 0, 8, 2, 14, -3, 21, 2, 30, 6, 41, 0, 55, 4], spikes: [{ x: 27, yOffset: 0.1 }] },
+  { points: [0, 0, 10, 0, 18, 5, 25, -1, 32, 6, 41, -2, 52, 3], spikes: [{ x: 23, yOffset: 0 }, { x: 36, yOffset: 0.1 }] },
+  { points: [0, 0, 12, 1, 20, 5, 28, -2, 38, 7, 46, 2, 58, 4], spikes: [{ x: 34, yOffset: 0.15 }, { x: 51, yOffset: 0 }] },
+  { points: [0, 0, 9, 3, 16, -1, 24, 5, 30, -4, 38, 7, 49, 1, 62, 5], spikes: [{ x: 28, yOffset: 0 }, { x: 44, yOffset: 0.2 }] },
+  { points: [0, 0, 8, 2, 15, -3, 22, 6, 31, -1, 40, 7, 52, 2, 66, 6], spikes: [{ x: 19, yOffset: 0 }, { x: 35, yOffset: 0 }, { x: 58, yOffset: 0.1 }] },
+  { points: [0, 0, 9, -1, 17, 5, 24, -4, 33, 6, 42, -1, 53, 8, 69, 3], spikes: [{ x: 27, yOffset: 0.2 }, { x: 47, yOffset: 0.2 }] },
+  { points: [0, 0, 7, 4, 14, -2, 22, 6, 28, -5, 36, 7, 44, -1, 58, 6, 74, 4], spikes: [{ x: 18, yOffset: 0 }, { x: 39, yOffset: 0.1 }, { x: 63, yOffset: 0.15 }] },
+  { points: [0, 0, 9, 1, 16, 7, 23, -3, 31, 8, 39, -2, 48, 8, 58, 0, 74, 7], spikes: [{ x: 20, yOffset: 0.2 }, { x: 35, yOffset: 0 }, { x: 54, yOffset: 0.2 }] },
+  { points: [0, 0, 8, -2, 14, 5, 22, -4, 30, 7, 37, -2, 47, 9, 56, 1, 69, 8, 84, 5], spikes: [{ x: 26, yOffset: 0.2 }, { x: 41, yOffset: 0 }, { x: 61, yOffset: 0.2 }] },
+  { points: [0, 0, 9, 3, 17, -3, 25, 8, 33, -4, 42, 9, 52, 1, 61, 9, 74, 0, 90, 7], spikes: [{ x: 22, yOffset: 0.1 }, { x: 45, yOffset: 0.15 }, { x: 67, yOffset: 0.1 }, { x: 82, yOffset: 0.2 }] }
 ];
 
 let levelIndex = 0;
 let endless = false;
 let endlessSeed = 1;
 let currentTrack = [];
+let currentSpikes = [];
 let trackMeshes = [];
 let finishMesh = null;
+let hazardMeshes = [];
 
 function clearTrack() {
   for (const mesh of trackMeshes) {
@@ -131,6 +139,14 @@ function clearTrack() {
     mesh.material.dispose();
   }
   trackMeshes = [];
+
+  for (const mesh of hazardMeshes) {
+    world.remove(mesh);
+    mesh.geometry.dispose();
+    mesh.material.dispose();
+  }
+  hazardMeshes = [];
+
   if (finishMesh) {
     world.remove(finishMesh);
     finishMesh.geometry.dispose();
@@ -144,18 +160,88 @@ function random01() {
   return (endlessSeed - 1) / 2147483646;
 }
 
-function createEndlessTrack() {
+function createEndlessLevel() {
   const points = [0, 0];
+  const spikes = [];
   let x = 0;
   let y = 0;
-  for (let i = 0; i < 36; i++) {
+  for (let i = 0; i < 42; i++) {
     x += 6 + random01() * 5;
     y += (random01() - 0.5) * 6;
-    y = Math.max(-2.5, Math.min(9.5, y));
+    y = Math.max(-3, Math.min(10, y));
     points.push(x, y);
+
+    if (i > 2 && i % 4 === 0 && random01() > 0.35) {
+      spikes.push({ x: x - (2 + random01() * 2), yOffset: random01() * 0.2 });
+    }
   }
-  return points;
+  return { points, spikes };
 }
+
+function getGroundAt(x) {
+  const pts = currentTrack;
+  if (x <= pts[0]) return { y: pts[1], angle: 0 };
+
+  for (let i = 0; i < pts.length - 2; i += 2) {
+    const x1 = pts[i];
+    const y1 = pts[i + 1];
+    const x2 = pts[i + 2];
+    const y2 = pts[i + 3];
+    if (x >= x1 && x <= x2) {
+      const t = (x - x1) / (x2 - x1);
+      return { y: y1 + (y2 - y1) * t, angle: Math.atan2(y2 - y1, x2 - x1) };
+    }
+  }
+
+  const endX = pts[pts.length - 2];
+  const endY = pts[pts.length - 1];
+  if (x > endX) return { y: endY, angle: 0 };
+  return { y: -20, angle: 0 };
+}
+
+function addSpikeHazard(spike) {
+  const ground = getGroundAt(spike.x);
+  const rampLength = 2.2;
+  const rampHeight = 0.8;
+
+  const ramp = new THREE.Mesh(
+    new THREE.BoxGeometry(rampLength, 0.45, 7.8),
+    new THREE.MeshStandardMaterial({ color: 0x585d6b, roughness: 0.9 })
+  );
+  ramp.position.set(spike.x - 1.2, ground.y - 0.35, 0);
+  ramp.rotation.z = Math.atan2(rampHeight, rampLength) + ground.angle * 0.3;
+  ramp.castShadow = true;
+  ramp.receiveShadow = true;
+  world.add(ramp);
+  hazardMeshes.push(ramp);
+
+  const spikesGroup = new THREE.Group();
+  const spikeMaterial = new THREE.MeshStandardMaterial({ color: 0xb91c1c, emissive: 0x2f0606, roughness: 0.55 });
+  for (let i = 0; i < 5; i++) {
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(0.28, 0.75, 8), spikeMaterial);
+    cone.position.set((i - 2) * 0.8, 0.35, 0);
+    cone.castShadow = true;
+    spikesGroup.add(cone);
+  }
+
+  spikesGroup.position.set(spike.x + 0.25, ground.y + 0.15 + spike.yOffset, 0);
+  spikesGroup.rotation.z = ground.angle * 0.45;
+  world.add(spikesGroup);
+  spikesGroup.traverse((obj) => {
+    if (obj.isMesh) {
+      hazardMeshes.push(obj);
+    }
+  });
+
+  return {
+    x: spike.x + 0.25,
+    y: ground.y + 0.5 + spike.yOffset,
+    halfWidth: 1.8,
+    halfHeight: 0.9
+  };
+}
+
+let spikeHitboxes = [];
 
 function makeTrackMeshes(points) {
   const material = new THREE.MeshStandardMaterial({ color: 0x2f2f3a, roughness: 0.82, metalness: 0.06 });
@@ -179,6 +265,8 @@ function makeTrackMeshes(points) {
     trackMeshes.push(slab);
   }
 
+  spikeHitboxes = currentSpikes.map((spike) => addSpikeHazard(spike));
+
   const endX = points[points.length - 2];
   const endY = points[points.length - 1];
   finishMesh = new THREE.Mesh(
@@ -192,7 +280,9 @@ function makeTrackMeshes(points) {
 
 function loadLevel() {
   clearTrack();
-  currentTrack = endless ? createEndlessTrack() : LEVELS[levelIndex];
+  const level = endless ? createEndlessLevel() : LEVELS[levelIndex];
+  currentTrack = level.points;
+  currentSpikes = level.spikes;
   makeTrackMeshes(currentTrack);
   resetCar();
   updateLabels();
@@ -218,25 +308,15 @@ function restartLevel() {
   statusEl.className = '';
 }
 
-function getGroundAt(x) {
-  const pts = currentTrack;
-  if (x <= pts[0]) return { y: pts[1], angle: 0 };
-
-  for (let i = 0; i < pts.length - 2; i += 2) {
-    const x1 = pts[i];
-    const y1 = pts[i + 1];
-    const x2 = pts[i + 2];
-    const y2 = pts[i + 3];
-    if (x >= x1 && x <= x2) {
-      const t = (x - x1) / (x2 - x1);
-      return { y: y1 + (y2 - y1) * t, angle: Math.atan2(y2 - y1, x2 - x1) };
+function checkSpikeCrash() {
+  for (const hitbox of spikeHitboxes) {
+    const dx = Math.abs(carState.x - hitbox.x);
+    const dy = carState.y - hitbox.y;
+    if (dx < hitbox.halfWidth && dy < hitbox.halfHeight) {
+      return true;
     }
   }
-
-  const endX = pts[pts.length - 2];
-  const endY = pts[pts.length - 1];
-  if (x > endX) return { y: endY, angle: 0 };
-  return { y: -20, angle: 0 };
+  return false;
 }
 
 function checkFinish() {
@@ -266,7 +346,7 @@ function checkCrash(dt) {
     carState.crashed = true;
   }
 
-  if (carState.y < -10) {
+  if (carState.y < -10 || checkSpikeCrash()) {
     carState.crashed = true;
   }
 

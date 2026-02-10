@@ -4,9 +4,9 @@ A browser game inspired by **Drive Mad**, built with Three.js.
 
 ## Features
 
-- 12 handcrafted stunt levels
-- Endless procedural mode
-- Physics-ish suspension and air-rotation controls
+- 18 handcrafted stunt levels with rising difficulty
+- Endless procedural mode with random hazards
+- Physics-ish suspension, air-rotation controls, and spike-ramp hazards
 - Instant restart and quick level switching
 
 ## Run locally
