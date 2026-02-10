@@ -95,10 +95,23 @@ const carState = {
   canControl: true
 };
 
+const physics = {
+  gravity: 28,
+  jumpVelocity: 11,
+  jumpCooldown: 0.28
+};
+
+const inputState = {
+  jumpQueued: false
+};
+
+let lastJumpTime = -10;
+
 const keys = new Set();
 window.addEventListener('keydown', (e) => {
   keys.add(e.key.toLowerCase());
   if (e.key.toLowerCase() === 'r') restartLevel();
+  if (e.code === 'Space') inputState.jumpQueued = true;
 });
 window.addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
 
@@ -201,19 +214,6 @@ function getGroundAt(x) {
 
 function addSpikeHazard(spike) {
   const ground = getGroundAt(spike.x);
-  const rampLength = 2.2;
-  const rampHeight = 0.8;
-
-  const ramp = new THREE.Mesh(
-    new THREE.BoxGeometry(rampLength, 0.45, 7.8),
-    new THREE.MeshStandardMaterial({ color: 0x585d6b, roughness: 0.9 })
-  );
-  ramp.position.set(spike.x - 1.2, ground.y - 0.35, 0);
-  ramp.rotation.z = Math.atan2(rampHeight, rampLength) + ground.angle * 0.3;
-  ramp.castShadow = true;
-  ramp.receiveShadow = true;
-  world.add(ramp);
-  hazardMeshes.push(ramp);
 
   const spikesGroup = new THREE.Group();
   const spikeMaterial = new THREE.MeshStandardMaterial({ color: 0xb91c1c, emissive: 0x2f0606, roughness: 0.55 });
@@ -234,8 +234,8 @@ function addSpikeHazard(spike) {
   });
 
   return {
-    x: spike.x + 0.25,
-    y: ground.y + 0.5 + spike.yOffset,
+    x: spike.x,
+    y: ground.y + 0.6 + spike.yOffset,
     halfWidth: 1.8,
     halfHeight: 0.9
   };
@@ -300,6 +300,8 @@ function resetCar() {
   carState.finished = false;
   carState.crashed = false;
   carState.canControl = true;
+  inputState.jumpQueued = false;
+  lastJumpTime = -10;
 }
 
 function restartLevel() {
@@ -374,6 +376,16 @@ function updatePhysics(dt) {
 
   const suspensionHeight = groundY + carState.halfHeight + 0.35;
   const onGround = carState.y <= suspensionHeight + 0.18;
+  const nowS = performance.now() * 0.001;
+  const canJump = carState.canControl && onGround && nowS - lastJumpTime > physics.jumpCooldown;
+
+  if (inputState.jumpQueued && canJump) {
+    carState.vy = Math.max(carState.vy, physics.jumpVelocity);
+    carState.y += 0.06;
+    carState.angularVel += Math.sign(carState.vx || 1) * 0.25;
+    lastJumpTime = nowS;
+  }
+  inputState.jumpQueued = false;
 
   if (carState.canControl) {
     if (onGround) {
@@ -388,7 +400,7 @@ function updatePhysics(dt) {
     }
   }
 
-  carState.vy -= 24 * dt;
+  carState.vy -= physics.gravity * dt;
 
   if (onGround) {
     carState.y += (suspensionHeight - carState.y) * 9.5 * dt;
