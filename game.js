@@ -98,20 +98,30 @@ const carState = {
 const physics = {
   gravity: 28,
   jumpVelocity: 11,
-  jumpCooldown: 0.28
+  jumpCooldown: 0.28,
+  jumpBuffer: 0.16,
+  coyoteTime: 0.12
 };
 
 const inputState = {
-  jumpQueued: false
+  jumpQueuedAt: -10,
+  lastGroundedAt: 0
 };
 
 let lastJumpTime = -10;
+
+function isJumpKey(e) {
+  return e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar';
+}
 
 const keys = new Set();
 window.addEventListener('keydown', (e) => {
   keys.add(e.key.toLowerCase());
   if (e.key.toLowerCase() === 'r') restartLevel();
-  if (e.code === 'Space') inputState.jumpQueued = true;
+  if (isJumpKey(e)) {
+    inputState.jumpQueuedAt = performance.now() * 0.001;
+    e.preventDefault();
+  }
 });
 window.addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
 
@@ -300,7 +310,8 @@ function resetCar() {
   carState.finished = false;
   carState.crashed = false;
   carState.canControl = true;
-  inputState.jumpQueued = false;
+  inputState.jumpQueuedAt = -10;
+  inputState.lastGroundedAt = performance.now() * 0.001;
   lastJumpTime = -10;
 }
 
@@ -377,15 +388,20 @@ function updatePhysics(dt) {
   const suspensionHeight = groundY + carState.halfHeight + 0.35;
   const onGround = carState.y <= suspensionHeight + 0.18;
   const nowS = performance.now() * 0.001;
-  const canJump = carState.canControl && onGround && nowS - lastJumpTime > physics.jumpCooldown;
 
-  if (inputState.jumpQueued && canJump) {
+  if (onGround) inputState.lastGroundedAt = nowS;
+
+  const hasBufferedJump = nowS - inputState.jumpQueuedAt <= physics.jumpBuffer;
+  const hasCoyoteGround = nowS - inputState.lastGroundedAt <= physics.coyoteTime;
+  const canJump = carState.canControl && hasCoyoteGround && nowS - lastJumpTime > physics.jumpCooldown;
+
+  if (hasBufferedJump && canJump) {
     carState.vy = Math.max(carState.vy, physics.jumpVelocity);
     carState.y += 0.06;
     carState.angularVel += Math.sign(carState.vx || 1) * 0.25;
     lastJumpTime = nowS;
+    inputState.jumpQueuedAt = -10;
   }
-  inputState.jumpQueued = false;
 
   if (carState.canControl) {
     if (onGround) {
