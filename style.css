@@ -1,0 +1,98 @@
+:root {
+  color-scheme: dark;
+  --bg: #0d1220;
+  --panel: rgba(10, 14, 24, 0.72);
+  --accent: #4ade80;
+  --danger: #f87171;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: radial-gradient(circle at top, #111a2e 0%, #05070f 75%);
+}
+
+#game {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  padding: 1rem;
+  background: linear-gradient(180deg, var(--panel) 0%, rgba(10, 14, 24, 0) 100%);
+  pointer-events: none;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.subtitle {
+  margin: 0.2rem 0 0.8rem;
+  color: #b8c2dd;
+  font-size: 0.92rem;
+}
+
+.controls,
+#tips,
+#status {
+  pointer-events: auto;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-weight: 650;
+  cursor: pointer;
+  background: #1f2a45;
+  color: #e3edff;
+}
+
+button:hover {
+  background: #2b3a63;
+}
+
+#levelLabel {
+  min-width: 8rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+#tips {
+  margin-top: 0.55rem;
+  color: #9dadcf;
+  font-size: 0.84rem;
+}
+
+#status {
+  margin-top: 0.4rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+#status.fail {
+  color: var(--danger);
+}
