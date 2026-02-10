@@ -127,7 +127,7 @@ window.addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
 
 const LEVELS = [
   { points: [0, 0, 12, 0, 24, 2, 38, 3, 48, 1], spikes: [{ x: 17, yOffset: 0 }] },
-  { points: [0, 0, 9, 0, 16, 3, 24, -1, 32, 2, 42, 2], spikes: [{ x: 28, yOffset: 0.15, spikeCount: 4 }] },
+  { points: [0, 0, 9, 0, 16, 3, 24, -1, 32, 2, 42, 2], spikes: [{ x: 31, yOffset: 0.05, spikeCount: 3, hitboxScaleX: 0.72, hitboxScaleY: 0.62 }] },
   { points: [0, 0, 11, 2, 19, -2, 29, 3, 42, -1, 55, 1], spikes: [{ x: 23, yOffset: 0 }, { x: 46, yOffset: 0.2 }] },
   { points: [0, 0, 8, 0, 13, 4, 17, -3, 23, 5, 33, 0, 42, 2], spikes: [{ x: 19, yOffset: 0.1 }] },
   { points: [0, 0, 10, 1, 18, 1, 24, 5, 30, -1, 39, 4, 48, 1], spikes: [{ x: 34, yOffset: 0 }] },
@@ -245,11 +245,14 @@ function addSpikeHazard(spike) {
     }
   });
 
+  const widthScale = spike.hitboxScaleX ?? 1;
+  const heightScale = spike.hitboxScaleY ?? 1;
+
   return {
     x: spike.x,
     y: ground.y + 0.6 + spike.yOffset,
-    halfWidth: 1.8,
-    halfHeight: 0.9
+    halfWidth: 1.8 * widthScale,
+    halfHeight: 0.9 * heightScale
   };
 }
 
